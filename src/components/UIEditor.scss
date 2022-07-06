@@ -1,0 +1,19 @@
+.page {
+  display: flex;
+  height: 100%;
+  .main-left {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #fae3e3;
+    width: 120px;
+    & > div {
+      background-color: #ccc;
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+      text-align: center;
+      line-height: 100px;
+      color: rgb(75, 46, 155);
+    }
+  }
+}
