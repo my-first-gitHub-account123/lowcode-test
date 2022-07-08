@@ -3,7 +3,7 @@ import { Map as ImmutableMap, List } from 'immutable'
 import { Topics } from './Topics'
 export class Node extends Emiter<Topics> {
   private nodeData: ImmutableMap<string, any>
-  constructor(type: string, x: number, y: number, w: number, h: number) {    
+  constructor(type: string, x: number, y: number, w: number, h: number) {
     super()
     this.nodeData = ImmutableMap({
       type,
@@ -38,6 +38,8 @@ export class Node extends Emiter<Topics> {
     return this.nodeData.get('children').toJS()
   }
   public setXY(vec: [number, number]) {
-    this.nodeData.set('X', vec[0] + this.getX()).set('Y', vec[1] + this.getY())
+    this.nodeData = this.nodeData
+      .set('x', vec[0] + this.nodeData.get('x'))
+      .set('y', vec[1] + this.nodeData.get('y'))
   }
 }

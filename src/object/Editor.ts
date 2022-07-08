@@ -8,13 +8,13 @@ export class Editor extends StateMachine<States, Actions, Topics> {
     super(States.Start)
     this.root = new Node('root', 0, 0, 800, 800)
     this.describeAddComponent()
-    // this.describeDrag()
+    this.describeDrag()
   }
   private describeAddComponent() {
     let componentToPlace: Meta | null = null
     // 位置信息
     let addVector: [number, number] = [0, 0]
-    this.register(States.Start, States.PlacingComponent, Actions.EvtDragStart, (meta) => {
+    this.register(States.Start, States.PlacingComponent, Actions.StartAddComponent, (meta) => {
       console.log('drag start', meta)
       // 拖拽组件
       componentToPlace = meta
@@ -31,8 +31,6 @@ export class Editor extends StateMachine<States, Actions, Topics> {
       if (!componentToPlace) {
         throw new Error('no component to create! ')
       }
-      console.log('mouser position is', Vec)
-
       const node = new Node(
         componentToPlace.type,
         addVector[0] - componentToPlace.w / 2 - 120,
@@ -47,17 +45,14 @@ export class Editor extends StateMachine<States, Actions, Topics> {
       console.log('drag reset')
     })
   }
-  private describeUI() {}
   private describeDrag() {
     let DragNode: Node
     this.register(States.Start, States.DragStart, Actions.EvtDragStart, (node) => {
       DragNode = node
     })
-    this.register(States.Start, States.Stoped, Actions.EvtDragEnd, (vec: [number, number]) => {
+    this.register(States.DragStart, States.Stoped, Actions.EvtDragEnd, (vec: [number, number]) => {
       DragNode.setXY(vec)
       DragNode.emit(Topics.NodePositionMoved)
-      console.log('NodePositionMoved');
-      
     })
     this.register(States.Stoped, States.Start, Actions.AUTO, (vec: [number, number]) => {})
   }

@@ -8,10 +8,8 @@ export default ({ editor }: { editor: Editor }) => {
         // <Draggable>
         <div
           draggable={true}
-          onDragstart={() => {       
-            console.log('EvtDragStart');
-                 
-            editor.dispatch(Actions.EvtDragStart, item);
+          onDragstart={() => {                        
+            editor.dispatch(Actions.StartAddComponent, item);
           }}
           key={item.title}
         >

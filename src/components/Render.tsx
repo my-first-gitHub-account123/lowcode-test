@@ -13,7 +13,7 @@ function render(node: Node, ver: Ref<number>) {
     case 'text':
       console.log('render', node.getType())
 
-      return <ItemRenderForDraggable node={node} />
+      return ItemRenderForDraggable({ node })
     default:
       throw new Error('unsupported type:' + node.getType())
   }
@@ -43,9 +43,9 @@ export const RenderItem = ({ node }: SkedoComponent) => {
 }
 
 const ItemRenderForDraggable = ({ node }: SkedoComponent) => {
-  console.log('ItemRenderForDraggable', node.getX())
   const editor = inject('editor') as Editor
-  // editor.on()
+  console.log('ItemRenderForDraggable', node.getX())
+
   return (
     <Draggable
       initialPosition={[node.getX(), node.getY()]}
@@ -64,13 +64,11 @@ const ItemRenderForDraggable = ({ node }: SkedoComponent) => {
 const Root = ({ node }: SkedoComponent) => {
   const children = node.getChildren()
   return (
-    <div data-skedo="root">
+    <>
       {children.map((no: Node, i) => {
-        console.log(no.getType())
-
         return <Render node={no} key={i} />
       })}
-    </div>
+    </>
   )
 }
 export const Render = defineComponent({
@@ -83,13 +81,12 @@ export const Render = defineComponent({
   },
   setup({ node }) {
     let ver = ref(0)
-    node.on(Topics.NodeChildrenUpdate).subscribe(() => {
+    node.on([Topics.NodeChildrenUpdate, Topics.NodePositionMoved]).subscribe(() => {
       ver.value++
     })
     return () => {
-      console.log(ver.value)
-
-      return render(node, ver) ?? <div></div>
+      console.log('Render', ver.value)
+      return render(node, ver)
     }
   }
 })

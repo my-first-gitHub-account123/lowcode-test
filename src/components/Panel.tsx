@@ -8,7 +8,7 @@ export const Panel = ({ editor }: { editor: Editor }) => {
       class={"root"}
       onDragover={(e) => {
         e.preventDefault();
-        editor.dispatch(Actions.EvtDrag, [e.clientX, e.clientY]);
+        editor.dispatch(Actions.StartAddComponent, [e.clientX, e.clientY]);
       }}
       onDrop={(e) => {
         e.preventDefault();        
